@@ -9,8 +9,8 @@ generator client {
 // enough when changing adapters.
 // See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
 datasource db {
-  provider = "sqlite"
-  url      = "file:dev.sqlite"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Session {
@@ -29,4 +29,40 @@ model Session {
   locale        String?
   collaborator  Boolean?  @default(false)
   emailVerified Boolean?  @default(false)
+}
+
+model Shop {
+  id             Int              @id @default(autoincrement())
+  domain         String           @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  syncOrdersTask SyncOrdersTask[]
+}
+
+model SyncOrdersTask {
+  id         Int                 @id @default(autoincrement())
+  shopId     Int
+  stage      SyncOrdersTaskStage
+  inProgress Boolean             @default(false)
+
+  data Json @default("{}")
+
+  retryCount Int     @default(0)
+  error      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  shop      Shop     @relation(fields: [shopId], references: [id])
+
+  @@index([shopId], name: "SyncOrdersTaskShopIdIndex")
+  @@index([stage], name: "SyncOrdersTaskStageIndex")
+  @@index([inProgress, updatedAt], name: "SyncOrdersTaskInProgressUpdatedAtIndex")
+}
+
+enum SyncOrdersTaskStage {
+  CREATE_BULK_TASK
+  WAIT_FOR_FINISH
+  DOWNLOAD_RESULT
+  PROCESS_RESULT
+  FINISH
 }

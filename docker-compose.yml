@@ -27,8 +27,6 @@ services:
     volumes:
       - ./source:/app
       - /home/cutpyc/.config:/home/node/.config
-    ports:
-      - 3003:3000
     command:
       - npm
       - run
@@ -44,6 +42,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - db-data:/var/lib/postgresql/data/
+    ports:
+      - 35432:5432
 
   pgadmin:
     image: dpage/pgadmin4:latest

@@ -3,18 +3,23 @@
 client_id = "36697cd6da14321ce7a4f40b9f1a335e"
 name = "task-1"
 handle = "task-24"
-application_url = "https://ac-predict-borders-wyoming.trycloudflare.com"
+application_url = "https://carrier-boom-visited-specifics.trycloudflare.com"
 embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "test-store-tasks.myshopify.com"
+include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products"
+scopes = "read_customers,read_orders,read_products,read_returns"
 
 [auth]
 redirect_urls = [
-  "https://ac-predict-borders-wyoming.trycloudflare.com/auth/callback",
-  "https://ac-predict-borders-wyoming.trycloudflare.com/auth/shopify/callback",
-  "https://ac-predict-borders-wyoming.trycloudflare.com/api/auth/callback"
+  "https://carrier-boom-visited-specifics.trycloudflare.com/auth/callback",
+  "https://carrier-boom-visited-specifics.trycloudflare.com/auth/shopify/callback",
+  "https://carrier-boom-visited-specifics.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
@@ -26,7 +31,3 @@ api_version = "2024-10"
 
 [pos]
 embedded = false
-
-[build]
-dev_store_url = "test-store-tasks.myshopify.com"
-automatically_update_urls_on_dev = true
