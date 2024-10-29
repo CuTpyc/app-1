@@ -1,0 +1,65 @@
+name: "ecom-cms-test"
+
+volumes:
+  db-data:
+  pgadmin-data:
+  tolgee-data:
+
+services:
+  remix:
+    # image: app-ecom-cms-test-node:latest
+    build:
+      context: ./docker/node
+      args:
+        - UID=${UID}
+        - GID=${GID}
+        - USER_NAME=${USER_NAME}
+    user: ${UID}:${GID}
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      DEFAULT_ADMIN_EMAIL: ${DEFAULT_ADMIN_EMAIL}
+      DEFAULT_ADMIN_PASSWORD: ${DEFAULT_ADMIN_PASSWORD}
+      COOKIE_SECRET: ${COOKIE_SECRET}
+      TOLGEE_API_KEY: ${TOLGEE_API_KEY}
+      TOLGEE_PROJECT_ID: ${TOLGEE_PROJECT_ID}
+      TOLGEE_API_URL: ${TOLGEE_API_URL}
+      TOLGEE_TRANSLATIONS_DIR: ${TOLGEE_TRANSLATIONS_DIR}
+    volumes:
+      - ./source:/app
+      - /home/cutpyc/.config:/home/node/.config
+    ports:
+      - 3003:3000
+    command:
+      - npm
+      - run
+      - dev
+
+  db:
+    image: postgres
+    restart: always
+    shm_size: 1024mb
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db-data:/var/lib/postgresql/data/
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - 30082:80
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  tolgee:
+    image: tolgee/tolgee:latest
+    volumes:
+      - tolgee-data:/data
+    environment:
+      TOLGEE_AUTHENTICATION_ENABLED: false
+    ports:
+      - '30081:8080'
