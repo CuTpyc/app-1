@@ -3,7 +3,7 @@
 client_id = "36697cd6da14321ce7a4f40b9f1a335e"
 name = "task-1"
 handle = "task-24"
-application_url = "https://devices-waterproof-ment-sister.trycloudflare.com"
+application_url = "https://wide-sends-cycles-define.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_customers,read_orders,read_products,read_returns"
 
 [auth]
 redirect_urls = [
-  "https://devices-waterproof-ment-sister.trycloudflare.com/auth/callback",
-  "https://devices-waterproof-ment-sister.trycloudflare.com/auth/shopify/callback",
-  "https://devices-waterproof-ment-sister.trycloudflare.com/api/auth/callback"
+  "https://wide-sends-cycles-define.trycloudflare.com/auth/callback",
+  "https://wide-sends-cycles-define.trycloudflare.com/auth/shopify/callback",
+  "https://wide-sends-cycles-define.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

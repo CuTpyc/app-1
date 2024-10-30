@@ -5,7 +5,7 @@ setInterval(() => {
 
   syncOrders().catch(console.error);
 
-}, 1000 * 30);
+}, 1000 * 5);
 
 
 // const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

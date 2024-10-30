@@ -1,0 +1,4 @@
+{"id":"gid:\/\/shopify\/Order\/6396004499703","customer":{"id":"gid:\/\/shopify\/Customer\/8368543531255","email":"cutpyccccc@gmail.com","firstName":"cutpycc","lastName":"cutpycc"},"totalPriceSet":{"shopMoney":{"amount":"749.95","currencyCode":"UAH"}},"refunds":[{"id":"gid:\/\/shopify\/Refund\/1008907550967","totalRefundedSet":{"shopMoney":{"amount":"749.95","currencyCode":"UAH"}}}]}
+{"id":"gid:\/\/shopify\/Return\/9868148983","__parentId":"gid:\/\/shopify\/Order\/6396004499703"}
+{"id":"gid:\/\/shopify\/Order\/6397400908023","customer":{"id":"gid:\/\/shopify\/Customer\/8370596774135","email":"test1@gmail.com","firstName":"test1","lastName":"test1"},"totalPriceSet":{"shopMoney":{"amount":"1399.9","currencyCode":"UAH"}},"refunds":[{"id":"gid:\/\/shopify\/Refund\/1008978166007","totalRefundedSet":{"shopMoney":{"amount":"1399.0","currencyCode":"UAH"}}}]}
+{"id":"gid:\/\/shopify\/Return\/9903243511","__parentId":"gid:\/\/shopify\/Order\/6397400908023"}

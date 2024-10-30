@@ -16,13 +16,13 @@ export const createBulkTask = async (task: SyncOrdersTask) => {
       updatedAt: new Date()
     }
   });
-
+  console.log('\n\n\n', "prisma.syncOrdersTask", "\n\n\n")
   const shop = await prisma.shop.findFirst({
     where: {
       id: task.shopId
     }
   });
-
+  console.log('\n\n\n', "await prisma.shop.findFirst", "\n\n\n")
   if (!shop) {
     await prisma.syncOrdersTask.update({
       where: {
@@ -41,10 +41,10 @@ export const createBulkTask = async (task: SyncOrdersTask) => {
   }
 
   const {admin: {graphql}} = await unauthenticated.admin(shop.domain);
-
+  console.log('\n\n\n', "unauthenticated.admin", "\n\n\n")
   const query = `
    {
-      orders(first: 999999999999999999) {
+      orders(first: 250) {
         edges {
           node {
             id
@@ -69,7 +69,7 @@ export const createBulkTask = async (task: SyncOrdersTask) => {
             }
           }
               }
-            returns (first: 999999999999999999) {
+            returns (first: 250) {
               edges{
                 node {
                   id
@@ -98,9 +98,9 @@ export const createBulkTask = async (task: SyncOrdersTask) => {
   `;
 
   const result = await graphql(mutation);
-
+  console.log('\n\n\n', "result = await graphql(mutation)", "\n", result, "\n\n\n")
   const body = await result.json();
-
+  console.log('\n\n\n', "body = await result.json()", "\n", body, "\n\n\n")
   if (result.ok) {
     await prisma.syncOrdersTask.update({
       where: {
@@ -110,7 +110,7 @@ export const createBulkTask = async (task: SyncOrdersTask) => {
         stage: $Enums.SyncOrdersTaskStage.WAIT_FOR_FINISH,
         inProgress: false,
         updatedAt: new Date(),
-        data: body.data
+        data: JSON.stringify(body.data)
       }
     });
     return;

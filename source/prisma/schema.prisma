@@ -31,12 +31,72 @@ model Session {
   emailVerified Boolean?  @default(false)
 }
 
-model Shop {
-  id             Int              @id @default(autoincrement())
-  domain         String           @unique
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  syncOrdersTask SyncOrdersTask[]
+model Customer {
+  id        Int      @id @default(autoincrement())
+  shopId    Int
+  shopifyId String   @unique
+  email     String   @unique
+  firstName String?
+  lastName  String?
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  orders    Order[]
+  returns   Return[]
+
+  @@index([email], name: "CustomerEmail")
+  @@index([shopifyId], name: "CustomerShopifyId")
+}
+
+model Order {
+  id             Int      @id @default(autoincrement())
+  shopId         Int
+  shopifyId      String   @unique
+  email          String
+  customerId     Int
+  totalPrice     Decimal
+  createdAt      DateTime
+  shop           Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  customer       Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  lineItems      LineItem[]
+
+  @@index([shopifyId], name: "OrderShopifyId")
+}
+
+model LineItem {
+  id         Int     @id
+  title      String
+  quantity   Int
+  orderId    Int
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id           Int      @id @default(autoincrement())
+  shopId       Int
+  shopifyId    String   @unique
+  title        String
+  totalReturns Int      @default(0)
+  shop         Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  returns      Return[]
+
+  @@index([shopifyId], name: "ProductShopifyId")
+}
+
+
+model Return {
+  id         Int   @id
+  orderId    Int
+  shopId     Int
+  email      String
+  returnDate DateTime
+  product    String
+  reason     String
+  quantity   Int
+  cost       Decimal
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [id])
+  shop       Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  Product Product[]
 }
 
 model SyncOrdersTask {
@@ -57,6 +117,19 @@ model SyncOrdersTask {
   @@index([shopId], name: "SyncOrdersTaskShopIdIndex")
   @@index([stage], name: "SyncOrdersTaskStageIndex")
   @@index([inProgress, updatedAt], name: "SyncOrdersTaskInProgressUpdatedAtIndex")
+}
+
+model Shop {
+  id        Int  @id @default(autoincrement())
+  domain      String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  customers Customer[]
+  orders    Order[]
+  returns   Return[]
+  syncOrdersTask SyncOrdersTask[]
+
+  Product Product[]
 }
 
 enum SyncOrdersTaskStage {

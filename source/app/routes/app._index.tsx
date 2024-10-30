@@ -110,12 +110,16 @@ export default function Index() {
     }
   }, [productId, shopify]);
   const generateProduct = () => fetcher.submit({}, { method: "POST" });
+  const startBulkOperation = () => fetcher.submit({}, { method: "POST" });
 
   return (
     <Page>
       <TitleBar title="Remix app template">
         <button variant="primary" onClick={generateProduct}>
           Generate a product
+        </button>
+        <button variant="primary" onClick={generateProduct}>
+          Start Bulk
         </button>
       </TitleBar>
       <BlockStack gap="500">
